@@ -4,8 +4,8 @@ const KEY = "dl_admin_auth_v1";
 const CHANGED = "dl-auth-changed";
 
 // Mock credentials — change here if needed
-export const ADMIN_USER = "admin";
-export const ADMIN_PASS = "daham2025";
+export const ADMIN_USER = "dahamlanka";
+export const ADMIN_PASS = "indrani68";
 
 export function login(username: string, password: string): boolean {
   if (username === ADMIN_USER && password === ADMIN_PASS) {
