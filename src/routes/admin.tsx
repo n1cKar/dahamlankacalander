@@ -96,11 +96,11 @@ function LoginForm() {
             </button>
           </form>
 
-          {/* <div className="mt-6 rounded-xl bg-muted/60 border border-border/60 p-3 text-xs text-muted-foreground">
+          <div className="mt-6 rounded-xl bg-muted/60 border border-border/60 p-3 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground">Demo credentials:</span>{" "}
             <code className="text-foreground">{ADMIN_USER}</code> /{" "}
             <code className="text-foreground">{ADMIN_PASS}</code>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

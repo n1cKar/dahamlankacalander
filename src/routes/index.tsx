@@ -296,9 +296,9 @@ function Index() {
             Have a question about a test date or vacancy? We're here.
           </p>
           <div className="mt-6 space-y-3 text-sm">
-            <div className="flex items-center gap-3"><Phone className="h-4 w-4" /> +94 11 234 5678</div>
-            <div className="flex items-center gap-3"><Mail className="h-4 w-4" /> info@dahamlanka.lk</div>
-            <div className="flex items-center gap-3"><MapPin className="h-4 w-4" /> Colombo, Sri Lanka</div>
+            <div className="flex items-center gap-3"><Phone className="h-4 w-4" /><span>+94 71 577 0939</span></div>
+            <div className="flex items-center gap-3"><Mail className="h-4 w-4" /><span>dahamlankacom@yahoo.com</span></div>
+            <div className="flex items-center gap-3"><MapPin className="h-4 w-4" /><span>Kaluwala Road, Kossinna, Ganemulla, Sri Lanka</span></div>
           </div>
           <Link
             to="/calendar"

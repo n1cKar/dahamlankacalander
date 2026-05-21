@@ -37,15 +37,15 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-primary" />
-              <span>+94 11 234 5678</span>
+              <a href="tel:+94715770939" className="hover:text-primary">+94 71 577 0939</a>
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-primary" />
-              <span>info@dahamlanka.lk</span>
+              <a href="mailto:dahamlankacom@yahoo.com" className="hover:text-primary">dahamlankacom@yahoo.com</a>
             </li>
             <li className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-primary" />
-              <span>Colombo, Sri Lanka</span>
+              <span>Kaluwala Road, Kossinna, Ganemulla, Sri Lanka</span>
             </li>
           </ul>
         </div>

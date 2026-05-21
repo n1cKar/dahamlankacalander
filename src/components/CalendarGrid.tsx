@@ -97,14 +97,18 @@ export function CalendarGrid({ events, onSelectEvent }: Props) {
         {cells.map((c, i) => {
           const isToday = c.iso === todayIso;
           const dayEvents = c.iso ? byDate.get(c.iso) ?? [] : [];
+          const hasEvents = dayEvents.length > 0;
           return (
             <div
               key={i}
               className={cn(
                 "min-h-[92px] sm:min-h-[110px] border-b border-r border-border/60 p-1.5 sm:p-2 relative",
                 !c.date && "bg-muted/20",
+                hasEvents && "cursor-pointer hover:bg-muted/40 transition-colors",
                 (i + 1) % 7 === 0 && "border-r-0",
               )}
+              onClick={() => hasEvents && onSelectEvent(dayEvents[0])}
+              role={hasEvents ? "button" : undefined}
             >
               {c.date && (
                 <>
@@ -124,7 +128,10 @@ export function CalendarGrid({ events, onSelectEvent }: Props) {
                       return (
                         <button
                           key={e.id}
-                          onClick={() => onSelectEvent(e)}
+                          onClick={(ev) => {
+                            ev.stopPropagation();
+                            onSelectEvent(e);
+                          }}
                           className={cn(
                             "w-full text-left text-[11px] leading-tight px-1.5 py-1 rounded-md border truncate",
                             "hover:translate-x-0.5 transition-transform",
@@ -137,7 +144,10 @@ export function CalendarGrid({ events, onSelectEvent }: Props) {
                     })}
                     {dayEvents.length > 2 && (
                       <button
-                        onClick={() => onSelectEvent(dayEvents[2])}
+                        onClick={(ev) => {
+                          ev.stopPropagation();
+                          onSelectEvent(dayEvents[2]);
+                        }}
                         className="text-[10px] text-muted-foreground hover:text-primary px-1.5"
                       >
                         +{dayEvents.length - 2} more

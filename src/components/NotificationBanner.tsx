@@ -1,34 +1,64 @@
 import { useEffect, useMemo, useState } from "react";
 import { Bell, X } from "lucide-react";
-import { useEvents, daysUntil, categoryMeta } from "@/lib/events-store";
+import { useEvents, daysUntil, categoryMeta, formatDate } from "@/lib/events-store";
 import { cn } from "@/lib/utils";
 
 export function NotificationBanner() {
   const { events } = useEvents();
-  const [dismissed, setDismissed] = useState<string | null>(null);
+  const [hidden, setHidden] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (typeof Notification === "undefined") return;
     if (Notification.permission === "default") {
-      // Ask quietly once per session
-      const asked = sessionStorage.getItem("dl_notif_asked");
-      if (!asked) {
-        sessionStorage.setItem("dl_notif_asked", "1");
-        Notification.requestPermission().catch(() => {});
-      }
+      Notification.requestPermission().catch(() => {});
     }
   }, []);
 
-  const upcoming = useMemo(() => {
+  const upcomingList = useMemo(() => {
     return events
       .map((e) => ({ e, d: daysUntil(e.date) }))
-      .filter((x) => x.d >= 0 && x.d <= 2)
-      .sort((a, b) => a.d - b.d)[0];
+      .filter((x) => x.d >= 0)
+      .sort((a, b) => a.d - b.d);
   }, [events]);
 
-  if (!upcoming || dismissed === upcoming.e.id) return null;
+  // Rotate the banner through all upcoming events
+  useEffect(() => {
+    if (upcomingList.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % upcomingList.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [upcomingList.length]);
 
-  const { e, d } = upcoming;
+  // Fire browser notifications periodically for upcoming events
+  useEffect(() => {
+    if (typeof Notification === "undefined") return;
+    if (upcomingList.length === 0) return;
+
+    const fire = () => {
+      if (Notification.permission !== "granted") return;
+      const next = upcomingList[0];
+      const when =
+        next.d === 0 ? "today" : next.d === 1 ? "tomorrow" : `in ${next.d} days`;
+      try {
+        new Notification("Daham Lanka — upcoming event", {
+          body: `${next.e.title} • ${when} (${formatDate(next.e.date)})`,
+          tag: `dl-event-${next.e.id}`,
+          icon: "/favicon.png",
+        });
+      } catch {}
+    };
+
+    fire();
+    const id = setInterval(fire, 5 * 60 * 1000); // every 5 minutes
+    return () => clearInterval(id);
+  }, [upcomingList]);
+
+  if (hidden || upcomingList.length === 0) return null;
+
+  const safeIndex = index % upcomingList.length;
+  const { e, d } = upcomingList[safeIndex];
   const meta = categoryMeta[e.category];
   const when = d === 0 ? "today" : d === 1 ? "tomorrow" : `in ${d} days`;
 
@@ -48,7 +78,7 @@ export function NotificationBanner() {
           <span className="text-muted-foreground">— starts {when}</span>
         </p>
         <button
-          onClick={() => setDismissed(e.id)}
+          onClick={() => setHidden(true)}
           className="ml-auto p-1 rounded hover:bg-muted"
           aria-label="Dismiss"
         >
