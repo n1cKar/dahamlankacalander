@@ -5,58 +5,50 @@ export type EventCategory = "test" | "agent" | "notice";
 export interface DLEvent {
   id: string;
   title: string;
+  titleSi?: string;
   date: string; // ISO yyyy-mm-dd
   time?: string; // HH:mm
   category: EventCategory;
-  description: string;
+  description: string;       // supports **highlight** and *italic*
+  descriptionSi?: string;
   note?: string;
+  noteSi?: string;
 }
 
-const STORAGE_KEY = "dl_events_v2";
+const STORAGE_KEY = "dl_events_v3";
 const EVENTS_CHANGED = "dl-events-changed";
 
 const seed: DLEvent[] = [
   {
-    id: "seed-portugal",
-    title: "Portugal / Holland / Belgium Recruitment Drive",
-    date: "2026-05-31",
-    category: "notice",
-    description:
-      "Recruitment for Portugal (can fly to Holland/Belgium after receiving card in 3–4 months). Dates: 31/5 & 1/6.\n\nCriteria:\n• Experienced + with foreign experience\n• 45 years old or above\n\nDemands:\n• 10 mechanic\n• 10 JCB / excavators\n• 5 TIG\n• 10 MIG\n• 10 fabricators\n• 2 foreman (for welding)\n• 5 shuttering (only if v.v. good)\n• 5 mason (only if v.v. good)\n• 5 tilers (only if v.v. good)\n• 5 barbenders (only if v.v. good)",
-    note:
-      "Portugal: 1200 + accommodation + overtime. Holland: 15.5 euros/hour → 3000 euro monthly.",
-  },
-  {
-    id: "seed-excavators",
-    title: "Excavators, Gypsum & Aluminium Fabricators Arrival",
-    date: "2026-06-01",
-    category: "notice",
-    description:
-      "• 10 excavators\n• 20 gypsum (7d–10d workers)\n• Aluminium fabricators",
-  },
-  {
     id: "seed-marino",
     title: "Marino Beach Hotel Colombo Stay",
     date: "2026-06-05",
-    category: "notice",
+    category: "agent",
     description:
-      "Stay for a week (June 5–11).\n\nRequirements:\n• 100 shuttering\n• 50 barbender\n• 20 welders\n• 10 finishing carpenters\n• 50 excavator\n• 30 painters\n• 50 tile masons\n• 30 block\n• 20 interlocks\n• 30 gypsum\n• 20 pump truck\n• 20 aluminium\n• 30 electricians\n• 30 plumbers",
-    note: "3 Arabic speaking guys w. driving.",
+      "Rony's New Agent — Agent A arrival.\n*Stay for a week (June 5 – June 11).*\n\nRequirements:\n• 100 shuttering\n• 50 barbender\n• 20 welders\n• 10 finishing carpenters\n• 50 excavator\n• 30 painters\n• 50 tile masons\n• 30 block\n• 20 interlocks\n• 30 gypsum\n• 20 pump truck\n• 20 aluminium\n• 30 electricians\n• 30 plumbers",
+    note: "**Need 3 Arabic speaking guys with driving.**",
+  },
+  {
+    id: "seed-agent-a-departure",
+    title: "Agent A Departure (Rony's Agent)",
+    date: "2026-06-11",
+    category: "agent",
+    description: "Agent A departs after the Marino Beach Hotel stay.",
   },
   {
     id: "seed-gali-arrival",
     title: "Gali's Arrival",
     date: "2026-06-11",
     category: "agent",
-    description: "Gali arrives — agent visit.",
+    description: "Gali arrives — agent visit.\n**Bring to office for verbal test with Gali.**",
   },
   {
     id: "seed-gali-test",
-    title: "Testing with Gali (Only to talk)",
+    title: "Testing with Gali (verbal only)",
     date: "2026-06-14",
     category: "test",
     description:
-      "• 50 excavator / JCB\n• 50 shuttering\n• Mason\n• Gypsum workers\n• Barbenders",
+      "**Verbal test with Gali — bring candidates to office.**\n\n• 50 excavator / JCB\n• 50 shuttering\n• Mason\n• Gypsum workers\n• Barbenders",
   },
 ];
 

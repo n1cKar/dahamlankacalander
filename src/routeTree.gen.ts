@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FlightTokenRouteImport } from './routes/flight.$token'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticesRoute = NoticesRouteImport.update({
+  id: '/notices',
+  path: '/notices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -34,39 +41,71 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FlightTokenRoute = FlightTokenRouteImport.update({
+  id: '/flight/$token',
+  path: '/flight/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/calendar': typeof CalendarRoute
+  '/notices': typeof NoticesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/flight/$token': typeof FlightTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/calendar': typeof CalendarRoute
+  '/notices': typeof NoticesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/flight/$token': typeof FlightTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/calendar': typeof CalendarRoute
+  '/notices': typeof NoticesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/flight/$token': typeof FlightTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/calendar' | '/sitemap.xml'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/calendar'
+    | '/notices'
+    | '/sitemap.xml'
+    | '/flight/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/calendar' | '/sitemap.xml'
-  id: '__root__' | '/' | '/admin' | '/calendar' | '/sitemap.xml'
+  to:
+    | '/'
+    | '/admin'
+    | '/calendar'
+    | '/notices'
+    | '/sitemap.xml'
+    | '/flight/$token'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/calendar'
+    | '/notices'
+    | '/sitemap.xml'
+    | '/flight/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   CalendarRoute: typeof CalendarRoute
+  NoticesRoute: typeof NoticesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  FlightTokenRoute: typeof FlightTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notices': {
+      id: '/notices'
+      path: '/notices'
+      fullPath: '/notices'
+      preLoaderRoute: typeof NoticesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -99,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/flight/$token': {
+      id: '/flight/$token'
+      path: '/flight/$token'
+      fullPath: '/flight/$token'
+      preLoaderRoute: typeof FlightTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -106,7 +159,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   CalendarRoute: CalendarRoute,
+  NoticesRoute: NoticesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  FlightTokenRoute: FlightTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

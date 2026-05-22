@@ -1,6 +1,7 @@
 import { Calendar, Clock, Bell } from "lucide-react";
 import { categoryMeta, daysUntil, formatDate, type DLEvent } from "@/lib/events-store";
 import { cn } from "@/lib/utils";
+import { RichText, stripMarkup } from "@/lib/rich-text";
 
 interface Props {
   event: DLEvent;
@@ -45,8 +46,13 @@ export function EventCard({ event, onClick }: Props) {
       <h3 className="mt-3 font-semibold text-foreground group-hover:text-primary transition-colors">
         {event.title}
       </h3>
+      {event.titleSi && (
+        <p className="text-xs text-muted-foreground mt-0.5" lang="si">
+          {event.titleSi}
+        </p>
+      )}
       <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-        {event.description}
+        <RichText text={stripMarkup(event.description).slice(0, 160)} />
       </p>
       <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
         <span className="inline-flex items-center gap-1.5">

@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { categoryMeta, formatDate, daysUntil, type DLEvent } from "@/lib/events-store";
 import { cn } from "@/lib/utils";
 import { Calendar, Clock, StickyNote, Bell, ListChecks, Share2, CalendarPlus } from "lucide-react";
+import { RichText, stripMarkup } from "@/lib/rich-text";
 
 interface Props {
   event: DLEvent | null;
@@ -68,7 +69,7 @@ export function EventModal({ event, onClose }: Props) {
 
   const handleShare = async () => {
     if (!event) return;
-    const text = `${event.title} — ${formatDate(event.date)}\n\n${event.description}${event.note ? `\n\nNote: ${event.note}` : ""}`;
+    const text = `${event.title} — ${formatDate(event.date)}\n\n${stripMarkup(event.description)}${event.note ? `\n\nNote: ${stripMarkup(event.note)}` : ""}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: event.title, text });
@@ -124,6 +125,11 @@ export function EventModal({ event, onClose }: Props) {
                   </span>
                 </div>
                 <DialogTitle className="text-xl text-left">{event.title}</DialogTitle>
+                {event.titleSi && (
+                  <p className="mt-1 text-sm text-muted-foreground text-left" lang="si">
+                    {event.titleSi}
+                  </p>
+                )}
               </DialogHeader>
 
               <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
@@ -144,6 +150,25 @@ export function EventModal({ event, onClose }: Props) {
             </div>
 
             <div className="px-6 py-5 overflow-y-auto flex-1 space-y-5">
+              <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                  English
+                </div>
+                <div className="text-sm leading-relaxed text-foreground/85">
+                  <RichText text={event.description} />
+                </div>
+              </div>
+              {event.descriptionSi && (
+                <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3" lang="si">
+                  <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1">
+                    සිංහල
+                  </div>
+                  <div className="text-sm leading-relaxed text-foreground/85">
+                    <RichText text={event.descriptionSi} />
+                  </div>
+                </div>
+              )}
+
               {sections.map((s, idx) => (
                 <div key={idx}>
                   {s.heading && (
@@ -153,7 +178,7 @@ export function EventModal({ event, onClose }: Props) {
                   )}
                   {s.intro.map((p, i) => (
                     <p key={i} className="text-sm leading-relaxed text-foreground/80 mb-2">
-                      {p}
+                      <RichText text={p} />
                     </p>
                   ))}
                   {s.items.length > 0 && (
@@ -177,7 +202,7 @@ export function EventModal({ event, onClose }: Props) {
                           )}
                           <div className="min-w-0">
                             <div className="text-sm font-medium text-foreground capitalize truncate">
-                              {it.label}
+                              <RichText text={it.label} />
                             </div>
                             {it.note && (
                               <div className="text-[11px] text-muted-foreground truncate">
@@ -197,7 +222,14 @@ export function EventModal({ event, onClose }: Props) {
                   <div className="flex items-center gap-2 text-xs font-semibold text-secondary-foreground mb-1">
                     <StickyNote className="h-3.5 w-3.5" /> Special note
                   </div>
-                  <p className="text-sm text-secondary-foreground/90">{event.note}</p>
+                  <p className="text-sm text-secondary-foreground/90">
+                    <RichText text={event.note} />
+                  </p>
+                  {event.noteSi && (
+                    <p className="mt-2 text-sm text-secondary-foreground/80 pt-2 border-t border-secondary-foreground/20" lang="si">
+                      <RichText text={event.noteSi} />
+                    </p>
+                  )}
                 </div>
               )}
             </div>

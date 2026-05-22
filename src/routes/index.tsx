@@ -16,6 +16,7 @@ import {
 import logo from "@/assets/logo.png";
 import { EventCard } from "@/components/EventCard";
 import { EventModal } from "@/components/EventModal";
+import { NoticeBoard } from "@/components/NoticeBoard";
 import { useEvents, daysUntil, type DLEvent } from "@/lib/events-store";
 
 export const Route = createFileRoute("/")({
@@ -165,6 +166,9 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {/* NOTICE BOARD */}
+      <NoticeBoard />
 
       {/* UPCOMING */}
       <section id="upcoming" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
