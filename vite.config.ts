@@ -1,5 +1,5 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import nitro from "nitro/vite"; // adjust import path to your Nitro plugin
+import { nitro } from "nitro/vite";
 
 export default defineConfig({
   tanstackStart: {
@@ -7,8 +7,6 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [
-      nitro(),
-    ],
+    plugins: [nitro()],
   },
 });
